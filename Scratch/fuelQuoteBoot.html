@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Quote Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="bootCSS.css">
+</head>
+
+<body>
+    <div class="text-center">
+        <h1 class="mb-5 mt-3 display-4">Fuel Quote</h1>
+        <div>
+            <form style="margin: auto;">
+                <label class="mb-3 mt-3">Email Address</label> <br>
+                <input class="form-control" type="number" placeholder="250" required id="gallons" name="gallons" autofocus min="1"> <br>
+                <label class="mb-3 mt-3">Delivery Address</label><br>
+                <div id="deliveryAddress">(recovered from database)</div>
+                <label class="mb-3 mt-3">Pick a Delivery Date:</label><br>
+                <input class="form-control" type="date" required id="datePick" name="datePicked"> <br>
+                <label class="mb-3 mt-3">Suggested Price per Gallon</label><br>
+                <div id="deliveryAddress">(calculated by pricing module)</div>
+                <div class="mt-4 mb-3">
+                    <button>
+                        Order
+                    </button>
+                </div>
+            </form>
+            <div class="text-center mt-4" id=bottomWidget>
+                    <label class="mb-3 mt-3">Amount Due:</label><br>
+                    <div id="amountDue" class="mb-3">(calculated gallons*price)</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
