@@ -15,4 +15,10 @@ h1 {
   padding-right: 30px;
   border: 1px solid;
   border-radius: 10px;
+  
+}
+label {
+  display: block;
+  text-align: center;
+  
 }
