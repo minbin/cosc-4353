@@ -1,0 +1,24 @@
+
+.header {
+  position: relative;
+  margin: auto;
+  margin-top: 60px;
+  text-align: center;
+}
+.tb {
+  
+  position: relative;
+  margin: auto;
+  margin-top: 60px;
+  max-width: 600px;
+  background-color: #f8f8ff;
+  padding: 5px;
+  padding-top: 2px;
+  border-radius: 10px;
+  border:  0.5px solid; 
+}
+
+
+
+
+

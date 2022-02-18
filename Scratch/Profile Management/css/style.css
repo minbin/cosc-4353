@@ -1,0 +1,18 @@
+h1 {
+  text-align: center;
+}
+.header {
+  margin-top: 85px;
+}
+.formContainer {
+  margin: auto;
+  margin-top: 70px;
+  margin-bottom: 50px;
+  max-width: 500px;
+  background-color: #f8f8ff;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: 1px solid;
+  border-radius: 10px;
+}
