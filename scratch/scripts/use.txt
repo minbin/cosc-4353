@@ -1,0 +1,1 @@
+Places scripts (e.g., JavaScript) here.
