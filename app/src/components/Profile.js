@@ -1,47 +1,55 @@
 import React from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
- 
+
+import Cookies from 'universal-cookie';
+import Navigation from './Navigation';
+
 function validateName(value) {
   let error;
+  value = value.trim();
   if (!value) {
     error = 'Required';
   } else if (value.length > 50) {
-    error = 'Character length exceeded. Maximum 50 characters.';
+    error = 'Maximum length (50) exceeded';
   }
   return error;
 }
 
 function validateAddress1(value) {
   let error;
+  value = value.trim();
   if (!value) {
     error = 'Required';
   } else if (value.length > 100) {
-    error = 'Character length exceeded. Maximum 100 characters.';
+    error = 'Maximum length (100) exceeded';
   }
   return error;
 }
 
 function validateAddress2(value) {
   let error;
+  value = value.trim();
   if (value.length > 100) {
-    error = 'Character length exceeded. Maximum 100 characters.';
+    error = 'Maximum length (100) exceeded';
   }
   return error;
 }
 
 function validateCity(value) {
   let error;
+  value = value.trim();
   if (!value) {
     error = 'Required';
   } else if (value.length > 100) {
-    error = 'Character length exceeded. Maximum 100 characters.';
+    error = 'Maximum length (100) exceeded';
   }
   return error;
 }
 
 function validateState(value) {
   let error;
+  value = value.trim();
   if (!value) {
     error = 'Required';
   }
@@ -50,70 +58,86 @@ function validateState(value) {
 
 function validateZipcode(value) {
   let error;
+  value = value.trim();
   if (!value) {
     error = 'Required';
   }  else if (value.length < 5) {
-    error = 'Character length not met. Minimum 5 characters.'
+    error = 'Minimum length (5) required'
   } else if (value.length > 9) {
-    error = 'Character length exceeded. Maximum 9 characters.'
+    error = 'Maximum length (9) required'
   }
   return error;
 }
 
-function Profile() {
+function handleSubmit() {
+}
+
+function Profile({ onSubmit = handleSubmit }) {
+  const cookies = new Cookies();
+
   return (
-    <Container className="d-flex align-items-center" style={{ height: '75vh' }}>
-      <Row className="mx-auto">
+    <Container>
+      <Navigation auth={ cookies.get('auth') } style={{ width: '100%' }}/>
+      <Row className="d-flex align-items-center justify-content-center">
         <Card className="" style={{ width: '40rem' }}>
           <Card.Body>
             <Card.Title className="mb-4">Client Profile Management</Card.Title>
-            <Formik 
-              initialValues={{ 
+            <Formik
+              initialValues={{
                 name: '',
-                address1: '', 
+                address1: '',
                 address2: '',
                 city: '',
                 state: '',
                 zipcode: ''
               }}
-              onSubmit={values => {
-                console.log(values);
-              }}
+              onSubmit={(e) => handleSubmit(e)}
             >
               {({ errors, touched, isValidating }) => (
                 <Form>
-                  <Row className="mb-1">
+                  <Row className="mb-2">
                     <Col>
-                      <Field name="name" validate={validateName} style={{ padding: '0.5em', width: '100%' }} placeholder="Full name"/>
-                      {errors.name && touched.name && <div style={{ color: 'red' }}>{errors.name}</div>}
-                      {(!errors.name || !touched.name) && <div>&nbsp;</div>}
+                      <label style={{ width: '100%' }} htmlFor="name" className="d-flex justify-content-between">
+                        <span>Full Name</span>
+                        <div data-testid="nameError" name="name" style={{ color: 'red' }}>{errors.name}</div>
+                      </label>
+                      <Field id="name" name="name" validate={validateName} style={{ padding: '0.5em', width: '100%' }} placeholder="John Doe"/>
                     </Col>
                   </Row>
-                  <Row className="mb-1">
+                  <Row className="mb-2">
                     <Col>
-                      <Field name="address1" validate={validateAddress1} style={{ padding: '0.5em', width: '100%' }} placeholder="Primary address"/>
-                      {errors.address1 && touched.address1 && <div style={{ color: 'red' }}>{errors.address1}</div>}
-                      {(!errors.address1 || !touched.address1) && <div>&nbsp;</div>}
+                      <label style={{ width: '100%' }} htmlFor="address1" className="d-flex justify-content-between">
+                        <span>Primary Address</span>
+                        <div data-testid="address1Error" name="address1" style={{ color: 'red' }}>{errors.address1}</div>
+                      </label>
+                      <Field id="address1" name="address1" validate={validateAddress1} style={{ padding: '0.5em', width: '100%' }} placeholder="123 Main St"/>
                     </Col>
                   </Row>
-                  <Row className="mb-1">
+                  <Row className="mb-2">
                     <Col>
-                      <Field name="address2" validate={validateAddress2} style={{ padding: '0.5em', width: '100%' }} placeholder="Secondary address (Optional)"/>
-                      {errors.address2 && touched.address2 && <div style={{ color: 'red' }}>{errors.address2}</div>}
-                      {(!errors.address2 || !touched.address2) && <div>&nbsp;</div>}
+                      <label style={{ width: '100%' }} htmlFor="address2" className="d-flex justify-content-between">
+                        <span>Secondary Address (Optional)</span>
+                        <div data-testid="address2Error" name="address2" style={{ color: 'red' }}>{errors.address2}</div>
+                      </label>
+                      <Field id="address2" name="address2" validate={validateAddress2} style={{ padding: '0.5em', width: '100%' }} placeholder="456 Small St"/>
                     </Col>
                   </Row>
-                  <Row className="mb-1">
+                  <Row className="mb-2">
                     <Col>
-                      <Field name="city" validate={validateCity} style={{ padding: '0.5em', width: '100%' }} placeholder="City"/>
-                      {errors.city && touched.city && <div style={{ color: 'red' }}>{errors.city}</div>}
-                      {(!errors.city || !touched.city) && <div>&nbsp;</div>}
+                      <label style={{ width: '100%' }} htmlFor="city" className="d-flex justify-content-between">
+                        <span>City</span>
+                        <div data-testid="cityError" name="city" style={{ color: 'red' }}>{errors.city}</div>
+                      </label>
+                      <Field id="city" name="city" validate={validateCity} style={{ padding: '0.5em', width: '100%' }} placeholder="Anytown"/>
                     </Col>
-                  </Row>
-                  <Row className="mb-1">
                     <Col>
-                      <Field 
+                      <label style={{ width: '100%' }} htmlFor="state" className="d-flex justify-content-between">
+                        <span>State</span>
+                        <div data-testid="stateError" name="state" style={{ color: 'red' }}>{errors.state}</div>
+                      </label>
+                      <Field
                         as="select"
+                        id="state"
                         name="state"
                         validate={validateState}
                         style={{ padding: '0.5em', width: '100%' }}
@@ -171,20 +195,20 @@ function Profile() {
                         <option value="WI">Wisconsin</option>
                         <option value="WY">Wyoming</option>
                       </Field>
-                      {errors.state && touched.state && <div style={{ color: 'red' }}>{errors.state}</div>}
-                      {(!errors.state || !touched.state) && <div>&nbsp;</div>}
                     </Col>
                   </Row>
-                  <Row className="mb-3">
+                  <Row className="mb-4">
                     <Col>
-                      <Field name="zipcode" validate={validateZipcode} style={{ padding: '0.5em', width: '100%' }} placeholder="Zipcode"/>
-                      {errors.zipcode && touched.zipcode && <div style={{ color: 'red' }}>{errors.zipcode}</div>}
-                      {(!errors.zipcode || !touched.zipcode) && <div>&nbsp;</div>}
+                      <label style={{ width: '100%' }} htmlFor="zipcode" className="d-flex justify-content-between">
+                        <span>Zipcode</span>
+                        <div data-testid="zipcodeError" name="zipcode" style={{ color: 'red' }}>{errors.zipcode}</div>
+                      </label>
+                      <Field id="zipcode" name="zipcode" validate={validateZipcode} style={{ padding: '0.5em', width: '100%' }} placeholder="770077"/>
                     </Col>
                   </Row>
                   <div className="d-grid gap-2">
                     <Button variant="primary" type="submit">
-                      Save
+                      Submit
                     </Button>
                   </div>
                 </Form>

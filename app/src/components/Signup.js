@@ -30,13 +30,14 @@ function handleSubmit(e, cookies, setMessage, setAuth) {
     cookies.set('auth', true);
     setAuth(true);
   } else {
-    setMessage("Incorrect credentials, please try again.")
+    setMessage("Could not create account, please try username: admin and password: admin.")
   }
 }
 
-function Login({ onSubmit = handleSubmit }) {
+function Signup({ onSubmit = handleSubmit }) {
+
   const cookies = new Cookies();
-  const [message, setMessage] = useState('Welcome, please login to continue.')
+  const [message, setMessage] = useState('Create an account.')
   const [auth, setAuth] = useState(cookies.get('auth'));
 
   return (
@@ -47,7 +48,7 @@ function Login({ onSubmit = handleSubmit }) {
           <Col className="d-flex align-items-center justify-content-center">
             <Card className="p-2" style={{ width: '25rem' }}>
               <Card.Body>
-                <Card.Title className="mb-4">Company Login</Card.Title>
+                <Card.Title className="mb-4">Account Creation</Card.Title>
                 <Formik
                   initialValues={{ username: '', password: '' }}
                   onSubmit={(e) => handleSubmit(e, cookies, setMessage, setAuth)}
@@ -56,18 +57,18 @@ function Login({ onSubmit = handleSubmit }) {
                   <Form>
                     <Row className="mb-2">
                       <Col>
-                        <label style={{ width: '100%' }} htmlFor="username">
+                        <label style={{ width: '100%' }} htmlFor="username" className="d-flex justify-content-between">
                           <span>Username</span>
-                          {errors.username && touched.username && <span className="float-right" style={{ color: 'red' }}>{errors.username}</span>}
+                          <div data-testid="usernameError" name="username" style={{ color: 'red' }}>{errors.username}</div>
                         </label>
                         <Field id="username" name="username" validate={validateUsername} style={{ padding: '0.5em', width: '100%' }} placeholder="Username" />
                       </Col>
                     </Row>
                     <Row className="mb-4">
                       <Col>
-                        <label style={{ width: '100%' }} htmlFor="password">
+                        <label style={{ width: '100%' }} htmlFor="password" className="d-flex justify-content-between">
                           <span>Password</span>
-                          {errors.username && touched.username && <span className="float-right" style={{ color: 'red' }}>{errors.password}</span>}
+                          <div data-testid="passwordError" name="password" style={{ color: 'red' }}>{errors.password}</div>
                         </label>
                         <Field id="password" name="password" validate={validatePassword} style={{ padding: '0.5em', width: '100%' }} placeholder="Password" />
                       </Col>
@@ -75,7 +76,7 @@ function Login({ onSubmit = handleSubmit }) {
                     <Row>
                       <Col className="text-left">
                         <Button variant="link">
-                          <a href="/#/signup">Create account</a>
+                          <a href="/#/login">Log in instead</a>
                         </Button>
                       </Col>
                       <Col className="text-right">
@@ -101,4 +102,4 @@ function Login({ onSubmit = handleSubmit }) {
   );
 }
 
-export default Login;
+export default Signup;
