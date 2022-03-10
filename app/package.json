@@ -4,9 +4,6 @@
   "homepage": "https://minbin.github.io/cosc-4353",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^4.6.0",
     "formik": "^2.2.9",
     "react": "^17.0.2",
@@ -27,6 +24,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "CI=true npm test -- --env=jsdom --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -47,7 +45,21 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/*.js",
+      "src/components/*.js",
+      "!src/index.js",
+      "!src/reportWebVitals.js",
+      "!src/components/index.js"
+    ]
+  },
   "devDependencies": {
-    "gh-pages": "^3.2.3"
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.3",
+    "@testing-library/user-event": "^13.5.0",
+    "gh-pages": "^3.2.3",
+    "react-client-session": "^0.0.7",
+    "universal-cookie": "^4.0.4"
   }
 }

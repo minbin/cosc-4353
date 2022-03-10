@@ -3,10 +3,14 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import DatePicker from 'react-datepicker';
 
+import Cookies from 'universal-cookie';
+import Navigation from './Navigation';
+
 import 'react-datepicker/dist/react-datepicker.css';
- 
+
 function validateGallonsRequested(value) {
   let error;
+  value = value.trim();
   if (!value) {
     error = 'Required';
   } else if (isNaN(value)) {
@@ -15,50 +19,55 @@ function validateGallonsRequested(value) {
   return error;
 }
 
-function Quote() {
+function handleSubmit(e) {
+}
+
+function Quote({ onSubmit = handleSubmit }) {
+  const cookies = new Cookies();
   const [startDate, setStartDate] = useState(new Date());
 
   return (
-    <Container className="d-flex align-items-center" style={{ height: '75vh' }}>
-      <Row className="mx-auto">
+    <Container>
+      <Navigation auth={ cookies.get('auth') } style={{ width: '100%' }}/>
+      <Row className="d-flex align-items-center justify-content-center">
         <Card className="" style={{ width: '40rem' }}>
           <Card.Body>
             <Card.Title className="mb-4">Fuel Quote Form</Card.Title>
-            <Formik 
-              initialValues={{ 
+            <Formik
+              initialValues={{
                 gallons: '',
-                address: '', 
+                address: '',
                 date: '',
                 price: ''
               }}
-              onSubmit={values => {
-                console.log(values);
-              }}
+              onSubmit={(e) => handleSubmit(e)}
             >
               {({ errors, touched, isValidating }) => (
                 <Form>
                   <Row className="mb-1">
                     <Col xs md="4" className="text-right" style={{ paddingTop: '0.5em' }}>
-                      Gallons Requested
+                      <label htmlFor="gallons">Gallons Requested</label>
                     </Col>
                     <Col>
-                      <Field name="gallons" validate={validateGallonsRequested} style={{ padding: '0.5em', width: '100%' }} placeholder="Gallons Requested" />
-                      {errors.gallons && touched.gallons && <div style={{ color: 'red' }}>{errors.gallons}</div>}
-                      {(!errors.gallons || !touched.gallons) && <div>&nbsp;</div>}
+                      <Field id="gallons" name="gallons" validate={validateGallonsRequested} style={{ padding: '0.5em', width: '100%' }} placeholder="Gallons Requested" />
+                      <div data-testid="gallonsError" name="gallons" style={{ color: 'red' }}>
+                        &nbsp;
+                        {errors.gallons}
+                      </div>
                     </Col>
                   </Row>
                   <Row className="mb-1">
                     <Col xs md="4" className="text-right" style={{ paddingTop: '0.5em' }}>
-                      Delivery Address
+                      <label htmlFor="address">Delivery Address</label>
                     </Col>
                     <Col>
-                      <Field name="address" style={{ padding: '0.5em', width: '100%' }} placeholder="Imported from profile" disabled />
+                      <Field id="address" name="address" style={{ padding: '0.5em', width: '100%' }} placeholder="Imported from profile" disabled />
                       <div>&nbsp;</div>
                     </Col>
                   </Row>
                   <Row className="mb-1">
                     <Col xs md="4" className="text-right" style={{ paddingTop: '0.5em' }}>
-                      Delivery Date
+                      <label htmlFor="deliveryDate">Delivery Date</label>
                     </Col>
                     <Col>
                       <>
@@ -68,8 +77,9 @@ function Quote() {
                           padding: 0.5em
                       }`}
                       </style>
-                        <DatePicker 
-                          selected={startDate} 
+                        <DatePicker
+                          id="deliveryDate" name="deliveryDate"
+                          selected={startDate}
                           onChange={(date) => setStartDate(date)}
                           wrapperClassName='date_picker full-width'
                         />
