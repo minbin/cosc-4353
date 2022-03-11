@@ -4,6 +4,82 @@
 <title>HTML, CSS and JavaScript demo</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link type="text/css" rel="stylesheet" href="../styles/FuelQuoteHistory.css"/>
+<script type = "module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
+        import { collection, getDocs, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
+        import { query, orderBy, limit, where, onSnapshot } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
+
+        const firebaseConfig = {
+
+                apiKey: "AIzaSyAC7LY4wF46SVoEIqfjxzDi61yFtciZhl4",
+
+                authDomain: "firstproject-f3af6.firebaseapp.com",
+
+                projectId: "firstproject-f3af6",
+
+                storageBucket: "firstproject-f3af6.appspot.com",
+
+                messagingSenderId: "104262464727",
+
+                appId: "1:104262464727:web:75c6e38b16ff04bb5b6c92"
+
+                };
+
+// Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        let users = [];
+
+        const userCollectionsRef = collection(db, "fuelQuotes");
+
+        const getUsers = async () => {
+          const data = await getDocs(userCollectionsRef);
+          users = data.docs.map((item) => item.data());
+          let table = document.getElementById("quoteTable");
+                let cell1;
+                let cell2;
+                let cell3;
+                let cell4;
+                let cell5;
+        
+                for (let item of users){
+                  console.log(item.gallonsRequested);
+                  let tr = document.createElement("tr");
+                  cell1 = document.createElement("td");
+                  cell1.innerHTML = item.gallonsRequested;
+
+                  cell2 = document.createElement("td");
+                  cell2.innerHTML = item.deliveryAddress;
+
+                  cell3 = document.createElement("td");
+                  let adjustedDate = new Date(Number(item.deliveryDate));
+                  cell3.innerHTML = adjustedDate.toDateString();
+
+                  cell4 = document.createElement("td");
+                  cell4.innerHTML = "   "+item.priceGallon;
+
+                  cell5 = document.createElement("td");
+                  cell5.innerHTML = item.totalAmount;
+
+                  tr.appendChild(cell1);
+                  tr.appendChild(cell2);
+                  tr.appendChild(cell3);
+                  tr.appendChild(cell4);
+                  tr.appendChild(cell5);
+
+                  table.appendChild(tr);
+                  
+                }
+
+        }
+        document.addEventListener("DOMContentLoaded", getUsers);
+
+       
+       
+       
+</script>
 </head>
 <body>
 <!-- Start your code here -->
@@ -11,36 +87,17 @@
 <h1 class = "display-4"> Fuel Quote History</h1>
   </div>
   <div class = "tb">
-    <table class="table">
+    <table class="table" id = "quoteTable">
      
         <th>Gallons Requested</th>
         <th>Delivery Address</th>
         <th>Delivery Date</th>
         <th>Price/Gallon</th>
+        <th>Total Cost</th>
     
-      <tr>
-        <td> N/A</td>
-        <td> N/A</td>
-        <td> N/A</td>
-        <td> N/A</td>
-      </tr>
-       <tr>
-        <td> N/A</td>
-        <td> N/A</td>
-        <td> N/A</td>
-        <td> N/A</td>
-      </tr>
-       <tr>
-        <td> N/A</td>
-        <td> N/A</td>
-        <td> N/A</td>
-        <td> N/A</td>
-      </tr>
-
     </table>
   </div>
 
-<!-- End your code here -->
-<script type="text/javascript" src="js/script.js"></script>
+
 </body>
 </html>

@@ -18,6 +18,13 @@
   border:  0.5px solid; 
 }
 
+td {
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
 
 
 
