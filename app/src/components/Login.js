@@ -25,7 +25,7 @@ function validatePassword(value) {
 
 function handleSubmit(e, cookies, setMessage, setAuth) {
   if (e.username === "admin" && e.password === "admin") {
-    let link = <a href="/#/quote">here</a>;
+    let link = <a href="#/quote">here</a>;
     setMessage(<div>Login successful. Please click {link} to be redirected.</div>)
     cookies.set('auth', true);
     setAuth(true);
@@ -75,7 +75,7 @@ function Login({ onSubmit = handleSubmit }) {
                     <Row>
                       <Col className="text-left">
                         <Button variant="link">
-                          <a href="/#/signup">Create account</a>
+                          <a href="#/signup">Create account</a>
                         </Button>
                       </Col>
                       <Col className="text-right">
