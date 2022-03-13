@@ -6,7 +6,10 @@ import Navigation from './Navigation';
 
 function History() {
   const cookies = new Cookies();
-
+  let orders = cookies.get('history');
+  if (!orders) {
+    orders = [];
+  }
   return (
     <Container>
       <Navigation auth={ cookies.get('auth') } style={{ width: '100%' }}/>
@@ -25,29 +28,23 @@ function History() {
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
+              <td>test</td>
               <td>n/a</td>
               <td>n/a</td>
               <td>n/a</td>
               <td>n/a</td>
               <td>n/a</td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>n/a</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>n/a</td>
-              <td>n/a</td>
-            </tr>
+            {orders.map((order, index) =>
+              <tr key={index}>
+                <td>{index}</td>
+                <td>{order[0]}</td>
+                <td>{order[1]}</td>
+                <td>{order[2]}</td>
+                <td>{order[3]}</td>
+                <td>{order[4]}</td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </Container>
