@@ -167,7 +167,7 @@
 			//to edit their profile
 			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"
 			import {
-				getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut
+				getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence
 			} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js"
 			import {
 				getFirestore, addDoc, collection, query, where, onSnapshot, doc, getDocs, updateDoc
@@ -189,6 +189,10 @@
 			const db = getFirestore()
 			const auth = getAuth()
 
+			async function setupPersistence(){
+				await setPersistence(auth, browserSessionPersistence)
+			}
+			setupPersistence();
 			let q = null //for getting query later
 			let docRefId = null //for getting document to change later
 			const htmlSetup = document.querySelector('#inHTML')
