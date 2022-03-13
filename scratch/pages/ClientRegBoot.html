@@ -13,24 +13,79 @@
 
 <body>
     <div class="text-center">
-        <h1 class="mb-5 mt-3 display-4">Register with (Company)</h1>
+        <h1 class="mb-5 mt-3 display-4">Sign up</h1>
         <div>
-            <form style="margin: auto;">
+            <form class="signup" style="margin: auto;">
                 <label class="mb-3 mt-3">Email Address</label> <br>
                 <input class="form-control" type="email" placeholder="Type in your Email" required id="email" name="email" autofocus> <br>
                 <label class="mb-3 mt-3">Password:</label><br>
                 <input class="form-control" type="password" placeholder="Create a Password" required id="pword" name="password"> <br>
                 <div class="mt-4 mb-3">
-                    <button>
+                    <button onclick="register()">
                         Sign Up
                     </button>
                 </div>
                 <div class="mb-3">
-                    <a href="#">Already have an account?</a>
+                    <a class="nav-link" href="index.html">Already have an account?</a>
                 </div>
             </form>
         </div>
     </div>
+    
+
+    <script type = "module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"
+        import { getAuth, createUserWithEmailAndPassword 
+        } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js"
+        import { getFirestore, addDoc, collection
+        } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
+
+        const firebaseConfig = {
+                apiKey: "AIzaSyAC7LY4wF46SVoEIqfjxzDi61yFtciZhl4",
+                authDomain: "firstproject-f3af6.firebaseapp.com",
+                projectId: "firstproject-f3af6",
+                storageBucket: "firstproject-f3af6.appspot.com",
+                messagingSenderId: "104262464727",
+                appId: "1:104262464727:web:75c6e38b16ff04bb5b6c92"
+                }
+
+
+// Initialize Firebase
+
+        initializeApp(firebaseConfig)
+        const db = getFirestore()
+        const auth = getAuth()
+
+        const colRef = collection(db, 'profile')//for getting a reference to db collection to add a document
+        //signing users up
+        const signupForm = document.querySelector('.signup')
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            const email = signupForm.email.value
+            const password = signupForm.pword.value
+            createUserWithEmailAndPassword(auth, email, password) //wrap this in async function
+            .then((cred) => {
+                console.log('User created ', cred.user)
+                signupForm.reset()
+
+                addDoc(colRef, { //await
+                    city: "",
+                    fullName: "",
+                    uid: cred.user.uid,
+                    email: email,
+                    primaryAddress: "",
+                    secondaryAddress: "",
+                    state: "",
+                    zipcode: 0
+                })
+                .then(() => {
+                    window.location.replace("index.html")})
+            })
+            .catch((err) =>{
+                alert(err.message)
+            })
+        })
+    </script>
 </body>
 
 </html>

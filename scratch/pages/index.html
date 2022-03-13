@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>HTML, CSS and JavaScript demo</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link type="text/css" rel="stylesheet" href="../styles/index.css" />
+</head>
+
+<body>
+	<!-- Start your code here -->
+
+	<body>
+		<div id="login">
+			<div class="text-center">
+				<h1 class="mb-5 mt-3 display-4">Login</h1>
+				<div>
+					<form class="login" style="margin: auto;">
+						<label class="mb-3 mt-3">Email Address</label> <br>
+						<input class="form-control" type="email" placeholder="Type in your Email" required id="email"
+							name="email" autofocus> <br>
+						<label class="mb-3 mt-3">Password:</label><br>
+						<input class="form-control" type="password" placeholder="Type in your Password" required
+							id="pword" name="password"> <br>
+						<div class="mt-4 mb-3">
+							<button id="submitButton">
+								Login
+							</button>
+						</div>
+						<div class="mb-3">
+							<a class="nav-link" href="ClientRegBoot.html">Don't have an account?</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="header" id="header">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light ml-3">
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" href="FuelQuoteBoot.html">Fuel Quote</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="FuelQuoteHistory.html">Fuel Quote History</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<h1 class="display-4"> Profile Management</h1>
+		</div>
+
+		<div class="formContainer" id="editProfile">
+			<form class="mt-1" id="editForm">
+				<div>
+					<label for="fullName" class="form-label">Full name</label>
+					<input type="text" maxlength="50" name="fullName" placeholder="50 characters or less"
+						class="form-control" required />
+				</div>
+				<div class="mt-3">
+					<label for="address1" class="form-label">Primary Address</label>
+					<input type="text" maxlength="100" name="address1" placeholder="100 characters or less"
+						class="form-control" 100px required />
+				</div>
+				<div class="mt-3">
+
+					<label for="address2" class="form-label">Secondary Address</label>
+					<input type="text" maxlength="100" name="address2" placeholder="100 characters or less"
+						class="form-control" />
+				</div>
+				<div class="mt-3">
+					<label for="city" class="form-label">City</label>
+					<input type="text" maxlength="100" name='city' class="form-control"
+						placeholder="100 characters or less" required />
+				</div>
+				<div class="mt-3">
+					<label for="dropDown" class="form-label">State</label>
+					<select class="form-select" aria-label="Select your state" name="dropDown" required>
+						<option selected>Select your state </option>
+						<option value="AL">Alabama</option>
+						<option value="AK">Alaska</option>
+						<option value="AZ">Arizona</option>
+						<option value="AR">Arkansas</option>
+						<option value="CA">California</option>
+						<option value="CO">Colorado</option>
+						<option value="CT">Connecticut</option>
+						<option value="DE">Delaware</option>
+						<option value="DC">District Of Columbia</option>
+						<option value="FL">Florida</option>
+						<option value="GA">Georgia</option>
+						<option value="HI">Hawaii</option>
+						<option value="ID">Idaho</option>
+						<option value="IL">Illinois</option>
+						<option value="IN">Indiana</option>
+						<option value="IA">Iowa</option>
+						<option value="KS">Kansas</option>
+						<option value="KY">Kentucky</option>
+						<option value="LA">Louisiana</option>
+						<option value="ME">Maine</option>
+						<option value="MD">Maryland</option>
+						<option value="MA">Massachusetts</option>
+						<option value="MI">Michigan</option>
+						<option value="MN">Minnesota</option>
+						<option value="MS">Mississippi</option>
+						<option value="MO">Missouri</option>
+						<option value="MT">Montana</option>
+						<option value="NE">Nebraska</option>
+						<option value="NV">Nevada</option>
+						<option value="NH">New Hampshire</option>
+						<option value="NJ">New Jersey</option>
+						<option value="NM">New Mexico</option>
+						<option value="NY">New York</option>
+						<option value="NC">North Carolina</option>
+						<option value="ND">North Dakota</option>
+						<option value="OH">Ohio</option>
+						<option value="OK">Oklahoma</option>
+						<option value="OR">Oregon</option>
+						<option value="PA">Pennsylvania</option>
+						<option value="RI">Rhode Island</option>
+						<option value="SC">South Carolina</option>
+						<option value="SD">South Dakota</option>
+						<option value="TN">Tennessee</option>
+						<option value="TX">Texas</option>
+						<option value="UT">Utah</option>
+						<option value="VT">Vermont</option>
+						<option value="VA">Virginia</option>
+						<option value="WA">Washington</option>
+						<option value="WV">West Virginia</option>
+						<option value="WI">Wisconsin</option>
+						<option value="WY">Wyoming</option>
+					</select>
+				</div>
+				<div class="mt-3">
+					<label for="zip" class="form-label">Zipcode</label>
+					<input required type="text" class="form-control" placeholder="Include character code"
+						name="zipcode" />
+				</div>
+				<div class="mt-4">
+					<div class="text-center">
+						<button type="submit" class="btnClass" id="editButton">Submit Changes</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="formContainer" id="viewProfile">
+			<form class="mt-1" id="viewForm">
+				<div id="inHTML">
+
+				</div>
+				<div class="mt-4">
+					<div class="text-center">
+						<button type="submit" class="btnClass" id="viewButton">Edit Profile</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="text-center mt-3">
+			<button class="btnClass" id="logout">Logout</button>
+		</div>
+
+		<!-- End your code here -->
+		<script type="module"> //right now has js of signup; need to change to
+			//load what is currently in their profile page and then a seperate html doc
+			//to edit their profile
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"
+			import {
+				getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence
+			} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-auth.js"
+			import {
+				getFirestore, addDoc, collection, query, where, onSnapshot, doc, getDocs, updateDoc
+			} from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
+
+			const firebaseConfig = {
+				apiKey: "AIzaSyAC7LY4wF46SVoEIqfjxzDi61yFtciZhl4",
+				authDomain: "firstproject-f3af6.firebaseapp.com",
+				projectId: "firstproject-f3af6",
+				storageBucket: "firstproject-f3af6.appspot.com",
+				messagingSenderId: "104262464727",
+				appId: "1:104262464727:web:75c6e38b16ff04bb5b6c92"
+			}
+
+
+			// Initialize Firebase
+
+			initializeApp(firebaseConfig)
+			const db = getFirestore()
+			const auth = getAuth()
+
+			async function setupPersistence(){
+				await setPersistence(auth, browserSessionPersistence)
+			}
+			setupPersistence();
+			let q = null //for getting query later
+			let docRefId = null //for getting document to change later
+			const htmlSetup = document.querySelector('#inHTML')
+			//function to setup html for view profile page
+			const settingHtml = (que) => { //pass in q as argument
+				let html = ''
+				let data = null
+				getDocs(que)
+					.then((snapshot) => {
+						console.log(snapshot.docs[0].data())//can use .data().city to get city
+						data = snapshot.docs[0].data()
+						docRefId = snapshot.docs[0].id
+						html += `
+					<div>
+						<h5>Full Name</h5>
+						<p>[ ${data.fullName} ]</p>
+						<h5>Primary Address</h5>
+						<p>[ ${data.primaryAddress} ]</p>
+						<h5>Secondary Address</h5>
+						<p>[ ${data.secondaryAddress} ]</p>
+						<h5>City</h5>
+						<p>[ ${data.city} ]</p>
+						<h5>State</h5>
+						<p>[ ${data.state} ]</p>
+						<h5>Zipcode</h5>
+						<p>[ ${data.zipcode} ]</p>
+					</div>
+				`
+						htmlSetup.innerHTML = html
+					})
+			}
+
+			const colRef = collection(db, 'profile')//for getting a reference to db collection to add a document
+
+			//signing users in
+			const loginForm = document.querySelector('.login')
+			loginForm.addEventListener('submit', (e) => {
+				e.preventDefault()
+				const email = loginForm.email.value
+				const password = loginForm.pword.value
+
+				signInWithEmailAndPassword(auth, email, password)
+					.then((cred) => {
+						console.log('User logged in: ', cred.user)
+						loginForm.reset()
+						document.getElementById('viewProfile').style.display = 'block'
+						document.getElementById('login').style.display = 'none'
+						document.getElementById('header').style.display = 'block'
+						document.getElementById('logout').style.display = 'block'
+					})
+					.catch((err) => {
+						alert(err.message)
+					})
+			})
+
+			//clicking edit profile button
+			const change2edit = document.querySelector('#viewForm')
+			change2edit.addEventListener('submit', (e) => {
+				e.preventDefault()
+				document.getElementById('viewProfile').style.display = 'none'
+				document.getElementById('editProfile').style.display = 'block'
+			})
+
+			//submitting changes made
+			const submitEdit = document.querySelector('#editForm')
+			submitEdit.addEventListener('submit', (e) => {
+				e.preventDefault()
+
+				let docRef = doc(db, 'profile', docRefId)
+				//get values to make changes to database; updating db
+				let name = submitEdit.fullName.value
+				let pAddress = submitEdit.address1.value
+				let sAddress = submitEdit.address2.value
+				let cty = submitEdit.city.value
+				let stte = submitEdit.dropDown.value
+				let zcode = submitEdit.zipcode.value
+				updateDoc(docRef, {
+					fullName: name,
+					primaryAddress: pAddress,
+					secondaryAddress: sAddress,
+					city: cty,
+					state: stte,
+					zipcode: zcode
+				})
+					.then(() => {
+						submitEdit.reset()
+					})
+				settingHtml(q)
+
+				document.getElementById('viewProfile').style.display = 'block'
+				document.getElementById('editProfile').style.display = 'none'
+			})
+
+			//subscribing to auth status changes; changing to login page if logged out
+			onAuthStateChanged(auth, (user) => {
+				console.log('user status changed: ', user)
+				if (!user) {
+					document.getElementById('viewProfile').style.display = 'none'
+					document.getElementById('editProfile').style.display = 'none'
+					document.getElementById('header').style.display = 'none'
+					document.getElementById('logout').style.display = 'none'
+					docRefId = null
+					q = null //resetting q so next time we use the query, it'll be good to go
+					document.getElementById('login').style.display = 'block'
+				}
+				else {
+					q = query(colRef, where('uid', '==', user.uid))
+					while (!q)//could not get 'then' function to work so using busy wait
+					{ }
+					settingHtml(q)
+					document.getElementById('viewProfile').style.display = 'block'
+					document.getElementById('editProfile').style.display = 'none'
+					document.getElementById('header').style.display = 'block'
+					document.getElementById('logout').style.display = 'block'
+					document.getElementById('login').style.display = 'none'
+				}
+			})
+
+			//logging out
+			const logoutButton = document.querySelector('#logout')
+			logoutButton.addEventListener('click', () => {
+				signOut(auth)
+					.then(() => {
+						console.log("The user signed out")
+					})
+					.catch((e) => {
+						alert(err.message)
+					})
+			})
+		</script>
+	</body>
+
+</html>
