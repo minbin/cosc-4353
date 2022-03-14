@@ -19,6 +19,7 @@ describe("Profile component", () => {
     const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
     const input = getByLabelText(/full name/i);
     await act( async () => {
+      fireEvent.change(input, {target: {value:""}});
       fireEvent.blur(input);
     });
     await waitFor(() => {
@@ -48,6 +49,7 @@ describe("Profile component", () => {
     const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
     const input = getByLabelText(/primary/i);
     await act( async () => {
+      fireEvent.change(input, {target: {value:""}});
       fireEvent.blur(input);
     });
     await waitFor(() => {
@@ -77,6 +79,7 @@ describe("Profile component", () => {
     const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
     const input = getByLabelText(/secondary/i);
     await act( async () => {
+      fireEvent.change(input, {target: {value:""}});
       fireEvent.blur(input);
     });
   })
@@ -103,6 +106,7 @@ describe("Profile component", () => {
     const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
     const input = getByLabelText(/city/i);
     await act( async () => {
+      fireEvent.change(input, {target: {value:""}});
       fireEvent.blur(input);
     });
     await waitFor(() => {

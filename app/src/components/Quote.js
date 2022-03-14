@@ -4,7 +4,6 @@ import { Formik, Form, Field } from 'formik';
 import DatePicker from 'react-datepicker';
 
 import Cookies from 'universal-cookie';
-import Navigation from './Navigation';
 import { pricingModule } from './PricingModule.js';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -29,7 +28,7 @@ function handleSubmit(e, startDate, cookies, setOrder) {
   if (!history) {
     history = []
   }
-  history.push([e.gallons, cookies.get('address1'), startDate, ret.suggested, ret.total])
+  history.push([e.gallons, e.address, startDate, ret.suggested, ret.total])
   cookies.set('history', history);
 }
 
@@ -37,10 +36,16 @@ function Quote({ onSubmit = handleSubmit }) {
   const cookies = new Cookies();
   const [startDate, setStartDate] = useState(new Date());
   const [order, setOrder] = useState({ 'suggested': 'X.XX', 'subtotal': 'X,XXXX.XX', 'shipping': 'XXX.XX', 'tax': 'XXX.XX', 'total': 'X,XXXX.XX'})
+  const profile = cookies.get('profile');
+  let address = '123 Main St';
+  if (profile) {
+    if (profile['address1']) {
+      address = profile['address1'];
+    }
+  }
 
   return (
     <Container>
-      <Navigation auth={ cookies.get('auth') } style={{ width: '100%' }}/>
       <Row className="d-flex align-items-center justify-content-center">
         <Card className="" style={{ width: '40rem' }}>
           <Card.Body>
@@ -48,7 +53,7 @@ function Quote({ onSubmit = handleSubmit }) {
             <Formik
               initialValues={{
                 gallons: '',
-                address: '',
+                address: address,
                 date: '',
                 price: ''
               }}
@@ -73,7 +78,7 @@ function Quote({ onSubmit = handleSubmit }) {
                       <label htmlFor="address">Delivery Address</label>
                     </Col>
                     <Col>
-                      <Field id="address" name="address" style={{ padding: '0.5em', width: '100%' }} placeholder={cookies.get('address1')} disabled />
+                      <Field id="address" name="address" style={{ padding: '0.5em', width: '100%' }} placeholder={address} disabled />
                       <div>&nbsp;</div>
                     </Col>
                   </Row>

@@ -50,7 +50,8 @@
       "src/*.js",
       "src/components/*.js",
       "!src/index.js",
-      "!src/reportWebVitals.js",
+      "!src/components/Auth.js",
+      "!src/components/PrivateRoute.js",
       "!src/components/index.js"
     ]
   },

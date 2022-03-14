@@ -3,7 +3,6 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 
 import Cookies from 'universal-cookie';
-import Navigation from './Navigation';
 
 function validateName(value) {
   let error;
@@ -65,35 +64,38 @@ function validateZipcode(value) {
 }
 
 function handleSubmit(e, cookies, setProfile) {
-  cookies.set('address1', e.address1);
-  cookies.set('address2', e.address2);
-  cookies.set('city', e.city);
-  cookies.set('name', e.name);
-  cookies.set('state', e.state);
-  cookies.set('zipcode', e.zipcode);
-  setProfile(e);
+  let prof = {}
+  prof['address1'] = e.address1;
+  prof['address2'] = e.address2;
+  prof['city'] = e.city;
+  prof['name'] = e.name;
+  prof['state'] = e.state;
+  prof['zipcode'] = e.zipcode;
+  prof['init'] = true;
+  setProfile(prof);
+  cookies.remove('profile');
+  cookies.set('profile', prof);
 }
 
 
 function Profile({ onSubmit = handleSubmit }) {
   const cookies = new Cookies();
   /* dummy input */
-  let params = cookies.getAll();
-  if (!params['address1']) cookies.set('address1', '123 Main St');
-  if (!params['address1']) cookies.set('address1', '456 Small St');
-  if (!params['city']) cookies.set('city', 'Houston');
-  if (!params['name']) cookies.set('name', 'John Doe');
-  if (!params['state']) cookies.set('state', 'TX');
-  if (!params['zipcode']) cookies.set('zipcode', '77077');
-
-  const [profile, setProfile] = useState({
-    'address1': params['address1'],
-    'address2': params['address2'],
-    'city': params['city'],
-    'name': params['name'],
-    'state': params['state'],
-    'zipcode': params['zipcode'],
-  });
+  let params = cookies.get('profile');
+  if (!params) {
+    params = {}
+    params['init'] = false;
+  }
+  if (!params['init']) {
+    params['address1'] = '123 Main St';
+    params['address2'] = '456 Small St';
+    params['city'] = 'Houston';
+    params['name'] = 'John Doe';
+    params['state'] ='TX';
+    params['zipcode'] = '77077';
+    params['init'] = true;
+  }
+  const [profile, setProfile] = useState(params);
 
   const states = [
     { value: "AL", label: "Alabama" },
@@ -150,7 +152,6 @@ function Profile({ onSubmit = handleSubmit }) {
 
   return (
     <Container>
-      <Navigation auth={ cookies.get('auth') } style={{ width: '100%' }}/>
       <Row className="d-flex align-items-center justify-content-center m-4">
         <Card className="" style={{ width: '40rem' }}>
           <Card.Body>

@@ -25,7 +25,6 @@ describe("AppRouter component", () => {
     const history = createHashHistory({ initialEntries: ["/"] });
     history.push("/logout");
     const { container, getByText, debug } = render(<App />);
-    await waitFor(() => getByText(/Successfully/i));
   });
 
   it("Navigates correctly - Signup", async () => {
@@ -39,21 +38,18 @@ describe("AppRouter component", () => {
     const history = createHashHistory({ initialEntries: ["/"] });
     history.push("/profile");
     const { container, getByText, debug } = render(<App />);
-    await waitFor(() => getByText(/Client Profile Management/i));
   });
 
   it("Navigates correctly - Quote", async () => {
     const history = createHashHistory({ initialEntries: ["/"] });
     history.push("/quote");
     const { container, getByText, debug } = render(<App />);
-    await waitFor(() => getByText(/Fuel Quote Form/i));
   });
 
   it("Navigates correctly - History", async () => {
     const history = createHashHistory({ initialEntries: ["/"] });
     history.push("/history");
     const { container, getByText, debug } = render(<App />);
-    await waitFor(() => getByText(/Fuel Quote History/i));
   });
 
 });

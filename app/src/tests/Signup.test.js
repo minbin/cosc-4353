@@ -1,22 +1,26 @@
-import React from 'react'
-import { act } from "react-dom/test-utils"
-import { render, waitFor, fireEvent } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React from 'react';
+import { HashRouter } from 'react-router-dom';
+import { act } from 'react-dom/test-utils';
+import { render, waitFor, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import Signup from '../components/Signup.js'
+import Signup from '../components/Signup.js';
+import useAuth, { ProvideAuth } from '../components/Auth.js';
 
 describe("Signup component", () => {
   afterEach(jest.resetAllMocks);
 
   it('Username - string input', async () => {
-    const { container, getByLabelText, debug } = render(<Signup />);
+    const { container, getByLabelText, debug } =
+      render(<ProvideAuth><HashRouter><Signup useAuth={useAuth}/></HashRouter></ProvideAuth>);
     await act( async () => {
       fireEvent.change(getByLabelText(/username/i), {target: {value:'admin'}});
     });
   })
 
   it('Username - empty input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Signup />);
+    const { container, getByLabelText, getByTestId, debug } =
+      render(<ProvideAuth><HashRouter><Signup useAuth={useAuth}/></HashRouter></ProvideAuth>);
     const input = getByLabelText(/Username/i);
     await act( async () => {
       fireEvent.blur(input);
@@ -28,14 +32,16 @@ describe("Signup component", () => {
   })
 
   it('Password - string input', async () => {
-    const { container, getByLabelText, debug } = render(<Signup />);
+    const { container, getByLabelText, debug } =
+      render(<ProvideAuth><HashRouter><Signup useAuth={useAuth}/></HashRouter></ProvideAuth>);
     await act( async () => {
       fireEvent.change(getByLabelText(/Password/i), {target: {value:'admin'}});
     });
   })
 
   it('Password - empty input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Signup />);
+    const { container, getByLabelText, getByTestId, debug } =
+      render(<ProvideAuth><HashRouter><Signup useAuth={useAuth}/></HashRouter></ProvideAuth>);
     const input = getByLabelText(/Password/i);
     await act( async () => {
       fireEvent.blur(input);
@@ -48,7 +54,8 @@ describe("Signup component", () => {
 
   it('Submit - correct', async () => {
     const handleSubmit = jest.fn();
-    const { container, getByText, getByLabelText, getAllByRole, debug } = render(<Signup  onSubmit={handleSubmit}/>);
+    const { container, getByText, getByLabelText, debug } =
+      render(<ProvideAuth><HashRouter><Signup onSubmit={handleSubmit} useAuth={useAuth}/></HashRouter></ProvideAuth>);
 
     await act( async () => {
       fireEvent.change(getByLabelText(/Username/i), {target: {value:'admin'}});
@@ -64,7 +71,8 @@ describe("Signup component", () => {
 
   it('Submit - incorrect', async () => {
     const handleSubmit = jest.fn();
-    const { container, getByText, getByLabelText, getAllByRole, debug } = render(<Signup onSubmit={handleSubmit}/>);
+    const { container, getByText, getByLabelText, debug } =
+      render(<ProvideAuth><HashRouter><Signup onSubmit={handleSubmit} useAuth={useAuth}/></HashRouter></ProvideAuth>);
 
     await act( async () => {
       fireEvent.change(getByLabelText(/Username/i), {target: {value:'test'}});

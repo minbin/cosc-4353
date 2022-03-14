@@ -1,15 +1,15 @@
 import React from 'react'
+import { HashRouter } from 'react-router-dom';
 import { act } from "react-dom/test-utils"
 import { render, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import Quote from '../components/Quote.js'
+import History from '../components/History.js'
 
 describe("History component", () => {
   afterEach(jest.resetAllMocks);
 
-  it('Gallons Requested - float input', async () => {
-jest.mock('universal-cookie', ()=>({get: () => 'fr'}));
-    const { container, getByLabelText, debug } = render(<History />);
+  it('Render - history', async () => {
+    const { container, getByLabelText, debug } = render(<HashRouter><History /></HashRouter>);
   })
 });
