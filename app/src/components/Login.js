@@ -3,6 +3,10 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 
+import { firestore } from '../firebase';
+import { collection, query, where, getDocs } from "firebase/firestore";
+import bcrypt from 'bcryptjs';
+
 function validateUsername(value) {
   let error;
   value = value.trim();
@@ -21,21 +25,34 @@ function validatePassword(value) {
   return error;
 }
 
-function handleSubmit(e, login, setMessage) {
-  if (e.username === "admin" && e.password === "admin") {
-    login();
+const handleSubmit = async (e, login, setMessage) => {
+  const pw = bcrypt.hashSync(e.password, 8);
+  const isAuth = await validateUser(e);
+  if (isAuth) {
+    login(e);
   } else {
     setMessage("Incorrect credentials, please try again.")
   }
 }
 
-function Login(props) {
-  const [message, setMessage] = useState('Welcome, please use admin/admin to continue.')
+const validateUser = async (e) => {
+  const db = firestore;
+  const userRef = collection(db, 'UserCredentials');
+  const q = query(userRef, where('username', '==', e.username));
+  const qs = await getDocs(q);
+  let ret = false;
+  qs.forEach((doc) => {
+    if (bcrypt.compareSync(e.password, doc.data()['password'])) ret = true;
+  });
+  return ret;
+}
 
+function Login(props) {
+  const [message, setMessage] = useState('Welcome, please log in to continue.')
   const auth = props.useAuth();
   const navigate = useNavigate();
   const login = (e) => {
-    auth.signin(() => {
+    auth.signin(e, (e) => {
       navigate("/profile", { replace: true });
     });
   };
@@ -53,7 +70,9 @@ function Login(props) {
               <Card.Title className="mb-4">Company Login</Card.Title>
               <Formik
                 initialValues={{ username: '', password: '' }}
-                onSubmit={(e) => handleSubmit(e, login, setMessage)}
+                onSubmit={(e) => {
+                  handleSubmit(e, login, setMessage)
+                }}
               >
                 {({ errors, touched, isValidating }) => (
                 <Form>
@@ -70,15 +89,15 @@ function Login(props) {
                     <Col>
                       <label style={{ width: '100%' }} htmlFor="password">
                         <span>Password</span>
-                        {errors.username && touched.username && <span className="float-right" style={{ color: 'red' }}>{errors.password}</span>}
+                        {errors.password && touched.password && <span className="float-right" style={{ color: 'red' }}>{errors.password}</span>}
                       </label>
                       <Field id="password" name="password" validate={validatePassword} style={{ padding: '0.5em', width: '100%' }} placeholder="Password" />
                     </Col>
                   </Row>
                   <Row>
                     <Col className="text-left">
-                      <Button variant="link">
-                        <a href="#/signup">Create account</a>
+                      <Button variant="link" href="#/signup">
+                        Create account
                       </Button>
                     </Col>
                     <Col className="text-right">

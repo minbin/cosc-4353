@@ -5,18 +5,24 @@ import userEvent from '@testing-library/user-event'
 
 import Profile from '../components/Profile.js'
 
+import { getDoc, updateDoc } from 'firebase/firestore';
+jest.mock('../firebase');
+jest.mock('firebase/firestore');
+
 describe("Profile component", () => {
   afterEach(jest.resetAllMocks);
 
   it('Full Name - string input', async () => {
-    const { container, getByLabelText, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, debug } = render(<Profile test={true}/>);
     await act( async () => {
       userEvent.type(getByLabelText(/full name/i), 'John Doe');
     });
   })
 
   it('Full Name - empty input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/full name/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:""}});
@@ -28,7 +34,8 @@ describe("Profile component", () => {
   })
 
   it('Full Name - exceed string input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/full name/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:"abcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyq"}});
@@ -39,14 +46,16 @@ describe("Profile component", () => {
   })
 
   it('Address 1 - string input', async () => {
-    const { container, getByLabelText, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, debug } = render(<Profile test={true}/>);
     await act( async () => {
       userEvent.type(getByLabelText(/primary/i), '123 Main St');
     });
   })
 
   it('Address 1 - empty input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/primary/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:""}});
@@ -58,7 +67,8 @@ describe("Profile component", () => {
   })
 
   it('Address 1 - exceed string input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/primary/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:"abcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyq"}});
@@ -69,14 +79,16 @@ describe("Profile component", () => {
   })
 
   it('Address 2 - string input', async () => {
-    const { container, getByLabelText, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, debug } = render(<Profile test={true}/>);
     await act( async () => {
       userEvent.type(getByLabelText(/secondary/i), '456 Small St');
     });
   })
 
   it('Address 2 - empty input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/secondary/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:""}});
@@ -85,7 +97,8 @@ describe("Profile component", () => {
   })
 
   it('Address 2 - exceed string input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/secondary/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:"abcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyq"}});
@@ -96,14 +109,16 @@ describe("Profile component", () => {
   })
 
   it('City - string input', async () => {
-    const { container, getByLabelText, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, debug } = render(<Profile test={true}/>);
     await act( async () => {
       userEvent.type(getByLabelText(/city/i), 'Anytown');
     });
   })
 
   it('City - empty input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/city/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:""}});
@@ -115,7 +130,8 @@ describe("Profile component", () => {
   })
 
   it('City - exceed string input', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/city/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:"abcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyqabcdefghijklmnopqrstuvwxyq"}});
@@ -126,7 +142,8 @@ describe("Profile component", () => {
   })
 
   it('Zipcode - string input', async () => {
-    const { container, getByLabelText, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/zipcode/i)
     await act( async () => {
       fireEvent.change(input, {target: {value:"77077"}});
@@ -134,7 +151,8 @@ describe("Profile component", () => {
   })
 
   it('Zipcode - too short', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/zipcode/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:"770"}});
@@ -145,7 +163,8 @@ describe("Profile component", () => {
   })
 
   it('Zipcode - too long', async () => {
-    const { container, getByLabelText, getByTestId, debug } = render(<Profile />);
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
+    const { container, getByLabelText, getByTestId, debug } = render(<Profile test={true}/>);
     const input = getByLabelText(/zipcode/i);
     await act( async () => {
       fireEvent.change(input, {target: {value:"77007780098"}});
@@ -156,8 +175,9 @@ describe("Profile component", () => {
   })
 
   it('Submit', async () => {
+    getDoc.mockResolvedValueOnce({data: function () {return true}});
     const handleSubmit = jest.fn();
-    const { container, getByText, getByLabelText, debug } = render(<Profile onSubmit={handleSubmit}/>);
+    const { container, getByText, getByLabelText, debug } = render(<Profile onSubmit={handleSubmit} test={true}/>);
 
     await act( async () => {
       fireEvent.change(getByLabelText(/full/i), {target: {value:"John Doe"}});

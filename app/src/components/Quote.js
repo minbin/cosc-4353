@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import DatePicker from 'react-datepicker';
@@ -8,41 +8,65 @@ import { pricingModule } from './PricingModule.js';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { firestore } from '../firebase';
+import { doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
+
 function validateGallonsRequested(value, setOrder) {
   let error;
   value = value.trim();
   if (!value) {
     error = 'Required';
-  } else if (isNaN(value)) {
-    error = 'Please enter a numeric value.';
+  } else if (isNaN(value) || value <= 0) {
+    error = 'Please enter positive value.';
   } else {
     setOrder(pricingModule({ 'gallons': value }));
   }
   return error;
 }
 
-function handleSubmit(e, startDate, cookies, setOrder) {
-  let ret = pricingModule(e);
-  setOrder(ret);
-  let history = cookies.get('history');
-  if (!history) {
-    history = []
+function validateAddress(value) {
+  let error;
+  value = value.trim();
+  if (!value) {
+    error = 'Required';
   }
-  history.push([e.gallons, e.address, startDate, ret.suggested, ret.total])
-  cookies.set('history', history);
+  return error;
 }
 
-function Quote({ onSubmit = handleSubmit }) {
+const handleSubmit = async (e, startDate, cookies, setOrder) => {
+  const ret = pricingModule(e);
+  setOrder(ret);
+  const db = firestore;
+  const fuelQuoteRef = doc(db, 'FuelQuote', cookies.get('userid'));
+  await updateDoc(fuelQuoteRef, {
+    history: arrayUnion({
+      'gallons': e.gallons,
+      'address': e.address,
+      'startDate': startDate,
+      'suggested': ret.suggested,
+      'total': ret.total
+    })
+  });
+}
+
+function Quote({ onSubmit = handleSubmit, ...props }) {
   const cookies = new Cookies();
   const [startDate, setStartDate] = useState(new Date());
+  const [isBusy, setBusy] = useState(true && !props.test);
+  const [address, setAddress] = useState('Update address in Profile');
   const [order, setOrder] = useState({ 'suggested': 'X.XX', 'subtotal': 'X,XXXX.XX', 'shipping': 'XXX.XX', 'tax': 'XXX.XX', 'total': 'X,XXXX.XX'})
-  const profile = cookies.get('profile');
-  let address = '123 Main St';
-  if (profile) {
-    if (profile['address1']) {
-      address = profile['address1'];
-    }
-  }
+  const fetchData = async () => {
+    const cookies = new Cookies();
+    const db = firestore;
+    const clientInformationRef = doc(db, 'ClientInformation', cookies.get('userid'));
+    const snapshot = await getDoc(clientInformationRef).catch(e => {console.log(e)})
+    const data = snapshot.data()['address1'];
+    await setAddress(data);
+    await setBusy(false);
+  };
+  useEffect(() => {
+    fetchData()
+  }, []);
 
   return (
     <Container>
@@ -50,7 +74,7 @@ function Quote({ onSubmit = handleSubmit }) {
         <Card className="" style={{ width: '40rem' }}>
           <Card.Body>
             <Card.Title className="mb-4">Fuel Quote Form</Card.Title>
-            <Formik
+            {!isBusy && <Formik
               initialValues={{
                 gallons: '',
                 address: address,
@@ -66,7 +90,7 @@ function Quote({ onSubmit = handleSubmit }) {
                       <label htmlFor="gallons">Gallons Requested</label>
                     </Col>
                     <Col>
-                      <Field id="gallons" name="gallons" validate={(e) => validateGallonsRequested(e, setOrder)} style={{ padding: '0.5em', width: '100%' }} placeholder="Gallons Requested" />
+                      <Field id="gallons" name="gallons" validate={(e) => validateGallonsRequested(e, setOrder)} style={{ padding: '0.5em', width: '100%' }} />
                       <div data-testid="gallonsError" name="gallons" style={{ color: 'red' }}>
                         &nbsp;
                         {errors.gallons}
@@ -78,8 +102,11 @@ function Quote({ onSubmit = handleSubmit }) {
                       <label htmlFor="address">Delivery Address</label>
                     </Col>
                     <Col>
-                      <Field id="address" name="address" style={{ padding: '0.5em', width: '100%' }} placeholder={address} disabled />
-                      <div>&nbsp;</div>
+                      <Field id="address" name="address" validate={(e) => validateAddress(e)} style={{ padding: '0.5em', width: '100%' }} placeholder={address} disabled />
+                      <div data-testid="addressError" name="address" style={{ color: 'red' }}>
+                        &nbsp;
+                        {errors.address}
+                      </div>
                     </Col>
                   </Row>
                   <Row className="mb-1">
@@ -131,7 +158,7 @@ function Quote({ onSubmit = handleSubmit }) {
                   </div>
                 </Form>
               )}
-            </Formik>
+            </Formik>}
           </Card.Body>
         </Card>
       </Row>

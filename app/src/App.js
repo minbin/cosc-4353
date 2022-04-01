@@ -1,7 +1,6 @@
 import React from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { PrivateRoute, Navigation, Home, Login, Logout, Signup, Quote, Profile, History } from './components';
-
 import useAuth, { ProvideAuth } from './components/Auth.js';
 
 export default function App() {
@@ -22,7 +21,7 @@ export default function App() {
               <Route path='/quote' element={<Quote />}/>
             </Route>
             <Route path='/profile' element={<PrivateRoute useAuth={ useAuth } />}>
-              <Route path='/profile' element={<Profile />}/>
+              <Route path='/profile' element={<Profile test={false}/>}/>
             </Route>
             <Route path='/quote' element={<PrivateRoute useAuth={ useAuth } />}>
               <Route path='/quote' element={<Quote />}/>

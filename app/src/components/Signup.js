@@ -3,6 +3,10 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 
+import { firestore } from '../firebase';
+import { collection, query, where, getDocs, addDoc, doc, setDoc } from 'firebase/firestore';
+import bcrypt from 'bcryptjs';
+
 function validateUsername(value) {
   let error;
   value = value.trim();
@@ -21,21 +25,59 @@ function validatePassword(value) {
   return error;
 }
 
-function handleSubmit(e, login, setMessage) {
-  if (e.username === "admin" && e.password === "admin") {
-    login();
+const handleSubmit = async (e, login, setMessage) => {
+  const pw = bcrypt.hashSync(e.password, 8);
+  e.password = pw
+  const isCreate = await createUser(e);
+  if (isCreate) {
+    login(e);
   } else {
-    setMessage("Could not create account. Use admin/admin to login.")
+    setMessage("Could not create account.")
   }
 }
 
+const getUser = async (e) => {
+  const db = firestore;
+  const userRef = collection(db, 'UserCredentials');
+  const q = query(userRef, where('username', '==', e.username));
+  const qs = await getDocs(q);
+  return !qs.empty;
+}
+
+const createUser = async (e) => {
+  const db = firestore;
+  const user = await getUser(e);
+  if (user) return false;
+
+  const userRef = collection(db, 'UserCredentials');
+  const resUser = await addDoc(userRef, {
+    username: e.username,
+    password: e.password
+  })
+
+  await setDoc(doc(db, 'ClientInformation', e.username), {
+    'name': 'John Doe',
+    'address1': '123 Main St',
+    'address2': '456 Side St',
+    'city': 'Anytown',
+    'state': 'TX',
+    'zipcode': '77777'
+  });
+
+  await setDoc(doc(db, 'FuelQuote', e.username), {
+    'history': []
+  });
+
+  return resUser.id;
+}
+
 function Signup(props) {
-  const [message, setMessage] = useState('Create an account. Use admin/admin to login.')
+  const [message, setMessage] = useState('Create an account.')
 
   const auth = props.useAuth();
   const navigate = useNavigate();
   const login = (e) => {
-    auth.signin(() => {
+    auth.signin(e, (e) => {
       navigate("/profile", { replace: true });
     });
   };
@@ -77,8 +119,8 @@ function Signup(props) {
                   </Row>
                   <Row>
                     <Col className="text-left">
-                      <Button variant="link">
-                        <a href="#/login">Log in instead</a>
+                      <Button variant="link" href="#/login">
+                        Log in Instead
                       </Button>
                     </Col>
                     <Col className="text-right">

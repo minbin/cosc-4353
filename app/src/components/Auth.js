@@ -29,15 +29,12 @@ export default function useAuth() {
   return useContext(authContext);
 }
 
-function useProvideAuth() {
+function useProvideAuth(e) {
   const [user, setUser] = useState(cookies.get('userid'));
 
-  const signin = cb => {
-    return fakeAuth.signin(() => {
-      cookies.set('userid', 'admin');
-      setUser(cookies.get('userid'));
-      cb();
-    });
+  const signin = (e, cb) => {
+    cookies.set('userid', e.username);
+    setUser(cookies.get('userid'));
   };
 
   const signout = cb => {

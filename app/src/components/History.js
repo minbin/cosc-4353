@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
 
 import Cookies from 'universal-cookie';
 
+import { firestore } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
+
 function History() {
-  const cookies = new Cookies();
-  let orders = cookies.get('history');
-  if (!orders) {
-    orders = [];
-  }
+  const [orders, setOrders] = useState([]);
+  const fetchData = async () => {
+    const cookies = new Cookies();
+    const db = firestore;
+    const fuelQuoteRef = doc(db, 'FuelQuote', cookies.get('userid'));
+    const snapshot = await getDoc(fuelQuoteRef).catch(e => {console.log(e)})
+    const data = snapshot.data();
+    setOrders(data);
+  };
+  useEffect(() => {
+    fetchData()
+  }, []);
   return (
     <Container style={{ height: '70vh' }}>
       <h3>Fuel Quote History</h3>
@@ -24,22 +34,14 @@ function History() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>test</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>n/a</td>
-            <td>n/a</td>
-          </tr>
-          {orders.map((order, index) =>
+          {orders['history'] && orders['history'].map((order, index) =>
             <tr key={index}>
               <td>{index}</td>
-              <td>{order[0]}</td>
-              <td>{order[1]}</td>
-              <td>{order[2]}</td>
-              <td>{order[3]}</td>
-              <td>{order[4]}</td>
+              <td>{'gallons' in order && order['gallons']}</td>
+              <td>{order['address']}</td>
+              <td>{'startDate' in order && new Date(order['startDate']['seconds'] * 1000).toISOString().substr(0,19)}</td>
+              <td>{'suggested' in order && order['suggested']}</td>
+              <td>{'total' in order && order['total']}</td>
             </tr>
           )}
         </tbody>

@@ -4,6 +4,9 @@ import "@testing-library/jest-dom/extend-expect";
 import { createHashHistory } from "history";
 import App from "../App";
 
+jest.mock('../firebase');
+jest.mock('firebase/firestore');
+
 describe("AppRouter component", () => {
   afterEach(jest.resetAllMocks);
 
@@ -11,7 +14,7 @@ describe("AppRouter component", () => {
     const history = createHashHistory({ initialEntries: ["/"] });
     history.push("/home");
     const { container, getByText, debug } = render(<App />);
-    await waitFor(() => getByText(/Lorem/i));
+    await waitFor(() => getByText(/reactjs/i));
   });
 
   it("Navigates correctly - Login", async () => {

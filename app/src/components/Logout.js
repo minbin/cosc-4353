@@ -9,7 +9,7 @@ function Logout(props) {
 
   cookies.remove('profile');
 
-  auth.signout(() => {}	);
+  auth.signout(() => {});
   return (
     <Container className="d-flex align-items-center" style={{ height: '70vh' }}>
       <Row className="mx-auto">

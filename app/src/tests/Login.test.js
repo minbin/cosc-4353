@@ -7,6 +7,12 @@ import userEvent from '@testing-library/user-event'
 import Login from '../components/Login.js'
 import useAuth, { ProvideAuth } from '../components/Auth.js';
 
+import { getDocs } from 'firebase/firestore';
+import bcrypt from 'bcryptjs';
+jest.mock('../firebase');
+jest.mock('firebase/firestore');
+jest.mock('bcryptjs');
+
 describe("Login component", () => {
   afterEach(jest.resetAllMocks);
 
@@ -36,6 +42,7 @@ describe("Login component", () => {
   })
 
   it('Submit - correct', async () => {
+    getDocs.mockResolvedValueOnce([{data: function () {return {'password': 'admin'}}}]);
     const handleSubmit = jest.fn();
     const { container, getByText, getByLabelText, debug } =
       render(<ProvideAuth><HashRouter><Login onSubmit={handleSubmit} useAuth={useAuth}/></HashRouter></ProvideAuth>);
@@ -62,9 +69,6 @@ describe("Login component", () => {
       fireEvent.change(getByLabelText(/Password/i), {target: {value:'test'}});
     });
 
-    await act( async () => {
-      userEvent.click(getByText(/submit/i));
-    });
-    expect(handleSubmit);
   })
+
 });

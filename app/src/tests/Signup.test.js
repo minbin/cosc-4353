@@ -7,6 +7,10 @@ import userEvent from '@testing-library/user-event';
 import Signup from '../components/Signup.js';
 import useAuth, { ProvideAuth } from '../components/Auth.js';
 
+import { collection, query, addDoc, setDoc, getDocs } from 'firebase/firestore';
+jest.mock('../firebase');
+jest.mock('firebase/firestore');
+
 describe("Signup component", () => {
   afterEach(jest.resetAllMocks);
 
@@ -53,6 +57,10 @@ describe("Signup component", () => {
   })
 
   it('Submit - correct', async () => {
+    collection.mockResolvedValue('test');
+    query.mockResolvedValue(true);
+    getDocs.mockResolvedValue([true]);
+    addDoc.mockResolvedValue({id: 'test'});
     const handleSubmit = jest.fn();
     const { container, getByText, getByLabelText, debug } =
       render(<ProvideAuth><HashRouter><Signup onSubmit={handleSubmit} useAuth={useAuth}/></HashRouter></ProvideAuth>);
@@ -70,6 +78,9 @@ describe("Signup component", () => {
   })
 
   it('Submit - incorrect', async () => {
+    getDocs.mockResolvedValueOnce(true);
+    addDoc.mockResolvedValueOnce({id: 'test'});
+    setDoc.mockResolvedValueOnce({id: 'test'});
     const handleSubmit = jest.fn();
     const { container, getByText, getByLabelText, debug } =
       render(<ProvideAuth><HashRouter><Signup onSubmit={handleSubmit} useAuth={useAuth}/></HashRouter></ProvideAuth>);
@@ -85,4 +96,5 @@ describe("Signup component", () => {
 
     expect(handleSubmit);
   })
+
 });

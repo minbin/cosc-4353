@@ -4,13 +4,18 @@
   "homepage": "https://minbin.github.io/cosc-4353",
   "private": true,
   "dependencies": {
+    "@react-query-firebase/firestore": "^0.4.2",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^4.6.0",
+    "firebase": "^9.6.9",
     "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-datepicker": "^4.6.0",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.28.1",
     "react-native-sqlite-storage": "^6.0.1",
+    "react-query": "^3.34.16",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
@@ -51,6 +56,7 @@
       "src/components/*.js",
       "!src/index.js",
       "!src/components/Auth.js",
+      "!src/components/PricingModule.js",
       "!src/components/PrivateRoute.js",
       "!src/components/index.js"
     ]
@@ -62,5 +68,8 @@
     "gh-pages": "^3.2.3",
     "react-client-session": "^0.0.7",
     "universal-cookie": "^4.0.4"
+  },
+  "browser": {
+    "crypto": false
   }
 }
