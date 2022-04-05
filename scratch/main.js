@@ -1,20 +1,10 @@
-/*import { initializeApp } from 'firebase/app'
+import { initializeApp } from 'firebase/app'
 import {
     getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence
 } from 'firebase/auth'
 import {
     getFirestore, addDoc, collection, query, where, onSnapshot, doc, getDocs, updateDoc
-} from 'firebase/firestore'*/
-//const { initializeApp } 
-const app = require('firebase/app');
-/*const {
-    getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence
-} */
-const auth = require('firebase/auth')
-/*const {
-    getFirestore, addDoc, collection, query, where, onSnapshot, doc, getDocs, updateDoc
-}*/ 
-const firestore = require('firebase/firestore')
+} from 'firebase/firestore'
 
 const imp = require('./testing.js')
 
@@ -148,8 +138,3 @@ logoutButton.addEventListener('click', () => {
             alert(err.message)
         })
 })
-
-function sum(a,b) {
-    return a+b
-}
-module.exports.sum = sum
