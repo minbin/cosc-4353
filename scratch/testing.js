@@ -25,3 +25,8 @@ function setup(snapshot) {
     return ret
 }
 module.exports.setup = setup
+
+function sum(a,b) {
+    return a+b
+}
+module.exports.sum = sum
