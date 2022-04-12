@@ -21,6 +21,7 @@ button {
     border-radius: 15px;
     background-color: grey;
     color: white;
+
 }
 
 button:hover
@@ -49,5 +50,9 @@ a:hover {
     max-width: 400px;
     border-radius: 15px;
     margin: auto;
+    margin-bottom: 50px;
     background-color: #f8f8ff;
+}
+#quoteButton {
+    margin-bottom: 15px;
 }
