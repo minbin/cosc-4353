@@ -36,9 +36,24 @@
        
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        let hasHistory = false;
+        let userState;
         let users = [];
+        let quotes = [];
         const userCollectionsRef = collection(db, "profile");
+        const fuelQuoteCollectionRef = collection(db, "fuelQuotes");
         let currentUser;
+
+        let deliveryDiv = document.getElementById("deliveryAddress");
+        let emailLabel = document.getElementById("emailAddress");
+        
+        let delivAddress;
+        let gallonsInput;
+        let locationFactor = .02;
+        let historyFactor = 0;
+        let gallonsFactor = .03;
+        let profitFactor = .1;
+        
 
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
@@ -57,18 +72,87 @@
         const getUsers = async () => {
          
          const data = await getDocs(userCollectionsRef);
+         const quoteData = await getDocs(fuelQuoteCollectionRef);
          users = data.docs.map((item) => item.data());
-         let deliveryDiv = document.getElementById("deliveryAddress");
-         let emailLabel = document.getElementById("emailAddress");
+         quotes = quoteData.docs.map((item)=>item.data());
+
               
                for (let item of users){
                    if (item.email == currentUser ){
                      deliveryDiv.innerHTML = item.primaryAddress;
                      emailLabel.innerHTML = item.email;
+                     userState = item.state;
+                     delivAddress = item.primaryAddress;
+               }
+             }
+             for (let elem of quotes){
+               if (elem.email == currentUser){
+                 hasHistory = true;
                }
              }
              }
+
+          function calculateQuote(){
+            let priceDiv = document.getElementById("quoteDiv");
+            let totalCostDiv = document.getElementById("amountDue");
+            gallonsInput = document.getElementById("gallons").value;
+            if (hasHistory){
+              historyFactor = .01;
+            }
+            if (userState != "TX"){
+              locationFactor = .04;
+            }
+            if (gallonsInput > 1000){
+              gallonsFactor = .02;
+            }
+
+            let margin = 1.50*(locationFactor-historyFactor+gallonsFactor+profitFactor);
+            let pricePerGallon = 1.50 + margin;
+            priceDiv.innerHTML = pricePerGallon;
+            totalCostDiv.innerHTML = pricePerGallon*gallonsInput;
+
+          }
+
+          function pushQuote (){
+            
+            gallonsInput = document.getElementById("gallons").value;
+          
+            if (hasHistory){
+              historyFactor = .01;
+            }
+            if (userState != "TX"){
+              locationFactor = .04;
+            }
+            if (gallonsInput > 1000){
+              gallonsFactor = .02;
+            }
+
+            let margin = 1.50*(locationFactor-historyFactor+gallonsFactor+profitFactor);
+            let pricePerGallon = 1.50 + margin;
+            let delivDateString = document.getElementById("datePick").value;
+            let delivDate = Date.parse(delivDateString);
+        
+
+            addDoc(fuelQuoteCollectionRef, {
+                  deliveryAddress: delivAddress,
+                  deliveryDate: delivDate,
+                  email: currentUser,
+                  gallonsRequested: gallonsInput,
+                  priceGallon: pricePerGallon,
+                  totalAmount:  (pricePerGallon*gallonsInput)
+            }).then(()=>{ window.location.replace("FuelQuoteHistory.html");
+            }).catch((err)=> alert(err.message));
+           
+          }
+        
+          
              document.addEventListener("DOMContentLoaded", getUsers);
+
+             let quoteButton = document.getElementById("quoteButton");
+             let subButton = document.getElementById("submitButton");
+             quoteButton.addEventListener("click", calculateQuote);
+             subButton.addEventListener("click", pushQuote);
+
 
 
     </script>
@@ -99,9 +183,12 @@
                 <label class="mb-3 mt-3">Pick a Delivery Date:</label><br>
                 <input class="form-control" type="date" required id="datePick" name="datePicked"> <br>
                 <label class="mb-3 mt-3">Suggested Price per Gallon</label><br>
-                <div id="deliveryAddress">(calculated by pricing module)</div>
+                <div id="quoteDiv">(calculated by pricing module)</div>
                 <div class="mt-4 mb-3">
-                    <button>
+                  <button type = "button" class = "mb-3" id = "quoteButton">
+                    Get quote
+                </button>
+                    <button type = "button" id = "submitButton">
                         Order
                     </button>
                 </div>
