@@ -181,8 +181,8 @@ function Profile({ onSubmit=handleSubmit, ...props }) {
                       <Field id="zipcode" name="zipcode" validate={(e) => validateZipcode(e)} style={{ padding: '0.5em', width: '100%' }}/>
                     </Col>
                   </Row>
-                  <div className="d-grid gap-2">
-                    <Button variant="primary" type="submit">
+                  <div className="d-flex justify-content-end">
+                    <Button className="px-4 py-2" variant="primary" type="submit">
                       Submit
                     </Button>
                   </div>

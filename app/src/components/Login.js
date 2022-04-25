@@ -91,7 +91,7 @@ function Login(props) {
                         <span>Password</span>
                         {errors.password && touched.password && <span className="float-right" style={{ color: 'red' }}>{errors.password}</span>}
                       </label>
-                      <Field id="password" name="password" validate={validatePassword} style={{ padding: '0.5em', width: '100%' }} placeholder="Password" />
+                      <Field id="password" name="password" validate={validatePassword} style={{ padding: '0.5em', width: '100%' }} placeholder="Password" type="password" />
                     </Col>
                   </Row>
                   <Row>

@@ -114,7 +114,7 @@ function Signup(props) {
                         <span>Password</span>
                         <div data-testid="passwordError" name="password" style={{ color: 'red' }}>{errors.password}</div>
                       </label>
-                      <Field id="password" name="password" validate={validatePassword} style={{ padding: '0.5em', width: '100%' }} placeholder="Password" />
+                      <Field id="password" name="password" validate={validatePassword} style={{ padding: '0.5em', width: '100%' }} placeholder="Password" type="password"/>
                     </Col>
                   </Row>
                   <Row>
