@@ -117,10 +117,11 @@
             
             gallonsInput = document.getElementById("gallons").value;
             let delivDateString = document.getElementById("datePick").value;
+            delivDateString = delivDateString.replace(/-/, '/').replace(/-/, '/');
             let delivDate = Date.parse(delivDateString);
             
-            if (gallonsInput == "" || gallonsInput == null || !delivDate){
-              alert("Please fill in all fields.");
+            if (!gallonsInput || !delivDate || isNaN(gallonsInput) || gallonsInput < 0){
+              alert("Invalid input. Please try again.");
               return;
             }
             
