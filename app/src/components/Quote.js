@@ -67,9 +67,12 @@ function Quote({ onSubmit = handleSubmit, ...props }) {
     const clientInformationRef = doc(db, 'ClientInformation', cookies.get('userid'));
     const snapshot = await getDoc(clientInformationRef).catch(e => {console.log(e)})
     const data = snapshot.data();
-    const fuelQuoteQuery = query(collection(db, 'FuelQuote'));
-    const qs = await getDocs(fuelQuoteQuery);
-    if (!qs.empty) { await setHistory(true); }
+    const fuelQuoteRef = doc(db, 'FuelQuote', cookies.get('userid'));
+    const snapshot2 = await getDoc(fuelQuoteRef).catch(e => {console.log(e)})
+    const data2 = snapshot2.data();
+//    const fuelQuoteQuery = query(collection(db, 'FuelQuote'));
+//    const qs = await getDocs(fuelQuoteQuery);
+    if (!data2) { await setHistory(true); }
     await setAddress(data['address1']);
     await setInState(data['state'] === 'TX' ? true : false);
     await setBusy(false);
