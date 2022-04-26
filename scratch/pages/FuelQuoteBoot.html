@@ -116,6 +116,14 @@
           function pushQuote (){
             
             gallonsInput = document.getElementById("gallons").value;
+            let delivDateString = document.getElementById("datePick").value;
+            let delivDate = Date.parse(delivDateString);
+            
+            if (gallonsInput == "" || gallonsInput == null || !delivDate){
+              alert("Please fill in all fields.");
+              return;
+            }
+            
           
             if (hasHistory){
               historyFactor = .01;
@@ -129,9 +137,7 @@
 
             let margin = 1.50*(locationFactor-historyFactor+gallonsFactor+profitFactor);
             let pricePerGallon = 1.50 + margin;
-            let delivDateString = document.getElementById("datePick").value;
-            let delivDate = Date.parse(delivDateString);
-        
+           
 
             addDoc(fuelQuoteCollectionRef, {
                   deliveryAddress: delivAddress,
