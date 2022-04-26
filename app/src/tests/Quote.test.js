@@ -13,10 +13,9 @@ jest.mock('firebase/firestore');
 describe("Quote component", () => {
   afterEach(jest.resetAllMocks);
 
- Cookies.get = jest.fn()
-    .mockImplementation(() => {address:'test'});
+  Cookies.get = jest.fn().mockImplementation(() => {address:'test'});
   it('Gallons Requested - float input', async () => {
-    getDoc.mockResolvedValueOnce({data: function () {return {address1: 'test'}}});
+    getDoc.mockResolvedValue({data: function () {return {address1: 'test'}}});
     const { container, getByLabelText, debug } = render(<Quote test={true}/>);
     await act( async () => {
       userEvent.type(getByLabelText(/gallons requested/i), "13.37");
@@ -24,7 +23,7 @@ describe("Quote component", () => {
   })
 
   it('Gallons requested - empty input', async () => {
-    getDoc.mockResolvedValueOnce({data: function () {return {address1: 'test'}}});
+    getDoc.mockResolvedValue({data: function () {return {address1: 'test'}}});
     const { container, getByLabelText, getByTestId, debug } = render(<Quote test={true}/>);
     const input = getByLabelText(/Gallons Requested/i);
     await act( async () => {
@@ -37,7 +36,7 @@ describe("Quote component", () => {
   })
 
   it('Submit', async () => {
-    getDoc.mockResolvedValueOnce({data: function () {return {address1: 'test'}}});
+    getDoc.mockResolvedValue({data: function () {return {address1: 'test'}}});
     updateDoc.mockResolvedValueOnce({data: function () {return true}});
     const handleSubmit = jest.fn();
     const { container, getByText, getByLabelText, debug } = render(<Quote onSubmit={handleSubmit} test={true}/>);
@@ -47,7 +46,7 @@ describe("Quote component", () => {
     });
 
     await act( async () => {
-      userEvent.click(getByText(/check out/i));
+      userEvent.click(getByText(/submit/i));
     });
 
     expect(handleSubmit);
@@ -55,7 +54,7 @@ describe("Quote component", () => {
 
 
   it('Test datepicker', async () => {
-    getDoc.mockResolvedValueOnce({data: function () {return {address1: 'test'}}});
+    getDoc.mockResolvedValue({data: function () {return {address1: 'test'}}});
     const handleSubmit = jest.fn();
     const { container, getByText, getByLabelText, getById, debug } = render(<Quote onSubmit={handleSubmit} test={true}/>);
 
