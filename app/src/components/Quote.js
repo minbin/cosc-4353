@@ -9,7 +9,7 @@ import { pricingModule } from './PricingModule.js';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { firestore } from '../firebase';
-import { collection, query, getDocs, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
 
 function validateGallonsRequested(value) {
   let error;
@@ -30,34 +30,8 @@ function validateAddress(value) {
 }
 
 const handleSubmit = async (e, startDate, cookies, order, setOrder, inState, isQuote, setTitleMsg) => {
-  const db = firestore;
-  const fuelQuoteRef = doc(db, 'FuelQuote', cookies.get('userid'));
-  const snapshot2 = await getDoc(fuelQuoteRef).catch(e => {console.log(e)})
-  const data2 = snapshot2.data();
-  let history = false;
-  if (data2.history.length) {
-    history = true
-  }
-
-  const ret = pricingModule(e, inState, history);
+  const ret = await pricingModule(e, startDate, cookies, inState, isQuote, setTitleMsg);
   setOrder(ret);
-  if (isQuote) {
-    setTitleMsg('');
-  } else {
-    const db = firestore;
-    const fuelQuoteRef = doc(db, 'FuelQuote', cookies.get('userid'));
-    await updateDoc(fuelQuoteRef, {
-      history: arrayUnion({
-        'gallons': e.gallons,
-        'address': e.address,
-        'startDate': startDate,
-        'suggested': ret.suggested,
-        'total': ret.total,
-        'dateCreated': new Date().getTime()
-      })
-    });
-    setTitleMsg('Order Placed');
-  }
 }
 
 function Quote({ onSubmit = handleSubmit, ...props }) {
@@ -66,7 +40,6 @@ function Quote({ onSubmit = handleSubmit, ...props }) {
   const [isBusy, setBusy] = useState(true && !props.test);
   const [address, setAddress] = useState('Update address in Profile');
   const [inState, setInState] = useState(false);
-  const [history, setHistory] = useState(false);
   const [isQuote, setIsQuote] = useState(true);
   const [titleMsg, setTitleMsg] = useState('');
   const [order, setOrder] = useState({ 'suggested': 'X.XX', 'total': 'X,XXXX.XX'})

@@ -56,10 +56,31 @@ describe("Signup component", () => {
     });
   })
 
-  it('Submit - correct', async () => {
+  it('Submit - user created', async () => {
     collection.mockResolvedValue('test');
     query.mockResolvedValue(true);
-    getDocs.mockResolvedValue([true]);
+    getDocs.mockResolvedValue({docs: []});
+    addDoc.mockResolvedValue({id: 'MOCK_TEST'});
+    const handleSubmit = jest.fn();
+    const { container, getByText, getByLabelText, debug } =
+      render(<ProvideAuth><HashRouter><Signup onSubmit={handleSubmit} useAuth={useAuth}/></HashRouter></ProvideAuth>);
+
+    await act( async () => {
+      fireEvent.change(getByLabelText(/Username/i), {target: {value:'admin'}});
+      fireEvent.change(getByLabelText(/Password/i), {target: {value:'admin'}});
+    });
+
+    await act( async () => {
+      userEvent.click(getByText(/submit/i));
+    });
+
+    expect(handleSubmit);
+  })
+
+  it('Submit - user already exists', async () => {
+    collection.mockResolvedValue('test');
+    query.mockResolvedValue(true);
+    getDocs.mockResolvedValue({docs: [1]});
     addDoc.mockResolvedValue({id: 'test'});
     const handleSubmit = jest.fn();
     const { container, getByText, getByLabelText, debug } =
@@ -78,7 +99,7 @@ describe("Signup component", () => {
   })
 
   it('Submit - incorrect', async () => {
-    getDocs.mockResolvedValueOnce(true);
+    getDocs.mockResolvedValue({docs: [1]});
     addDoc.mockResolvedValueOnce({id: 'test'});
     setDoc.mockResolvedValueOnce({id: 'test'});
     const handleSubmit = jest.fn();

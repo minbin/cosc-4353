@@ -42,8 +42,43 @@ describe("Quote component", () => {
     const { container, getByText, getByLabelText, debug } = render(<Quote onSubmit={handleSubmit} test={true}/>);
 
     await act( async () => {
+      userEvent.type(getByLabelText(/gallons requested/i), "13.37");
+    });
+
+    const date = getByLabelText(/Delivery Date/i);
+    await act( async () => {
+      fireEvent.mouseDown(date);
+      fireEvent.change(date, { target: { value: "10-25-2020" } });
+    });
+
+    await act( async () => {
+      userEvent.click(getByText(/submit/i));
+    });
+
+    expect(handleSubmit);
+  })
+
+  it('Quote', async () => {
+    getDoc.mockResolvedValue({data: function () {return {address1: 'test'}}});
+    updateDoc.mockResolvedValueOnce({data: function () {return true}});
+    const handleSubmit = jest.fn();
+    const { container, getByText, getByLabelText, debug } = render(<Quote onSubmit={handleSubmit} test={true}/>);
+
+    await act( async () => {
       fireEvent.change(getByLabelText(/gallons requested/i), {target: {value:13.37}});
     });
+
+    await act( async () => {
+      userEvent.click(getByText(/get quote/i));
+    });
+
+    expect(handleSubmit);
+  })
+
+  it('Test submit', async () => {
+    getDoc.mockResolvedValue({data: function () {return {address1: 'test'}}});
+    const handleSubmit = jest.fn();
+    const { container, getByText, getByLabelText, debug } = render(<Quote onSubmit={handleSubmit} test={true}/>);
 
     await act( async () => {
       userEvent.click(getByText(/submit/i));

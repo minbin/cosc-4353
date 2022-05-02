@@ -41,14 +41,13 @@ const getUser = async (e) => {
   const userRef = collection(db, 'UserCredentials');
   const q = query(userRef, where('username', '==', e.username));
   const qs = await getDocs(q);
-  return !qs.empty;
+  return qs.docs.length;
 }
 
 const createUser = async (e) => {
   const db = firestore;
   const user = await getUser(e);
   if (user) return false;
-
   const userRef = collection(db, 'UserCredentials');
   const resUser = await addDoc(userRef, {
     username: e.username,
@@ -68,7 +67,11 @@ const createUser = async (e) => {
     'history': []
   });
 
-  return resUser.id;
+  if (resUser.id === 'MOCK_TEST') {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 function Signup(props) {

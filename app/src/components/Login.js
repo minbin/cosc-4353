@@ -26,7 +26,6 @@ function validatePassword(value) {
 }
 
 const handleSubmit = async (e, login, setMessage) => {
-  const pw = bcrypt.hashSync(e.password, 8);
   const isAuth = await validateUser(e);
   if (isAuth) {
     login(e);
