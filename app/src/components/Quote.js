@@ -72,7 +72,7 @@ function Quote({ onSubmit = handleSubmit, ...props }) {
     const data2 = snapshot2.data();
 //    const fuelQuoteQuery = query(collection(db, 'FuelQuote'));
 //    const qs = await getDocs(fuelQuoteQuery);
-    if (!data2) { await setHistory(true); }
+    if (data2) { await setHistory(true); }
     await setAddress(data['address1']);
     await setInState(data['state'] === 'TX' ? true : false);
     await setBusy(false);
