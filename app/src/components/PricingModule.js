@@ -9,6 +9,7 @@ export function pricingModule(e, inState, history) {
     margin = margin - 0.01;
   }
   if (history) {
+    console.log('history');
     margin = margin - 0.01;
   }
   ret['suggested'] = (1.5 * (1+margin)).toFixed(4);

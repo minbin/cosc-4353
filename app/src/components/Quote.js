@@ -29,7 +29,16 @@ function validateAddress(value) {
   return error;
 }
 
-const handleSubmit = async (e, startDate, cookies, order, setOrder, inState, history, isQuote, setTitleMsg) => {
+const handleSubmit = async (e, startDate, cookies, order, setOrder, inState, isQuote, setTitleMsg) => {
+  const db = firestore;
+  const fuelQuoteRef = doc(db, 'FuelQuote', cookies.get('userid'));
+  const snapshot2 = await getDoc(fuelQuoteRef).catch(e => {console.log(e)})
+  const data2 = snapshot2.data();
+  let history = false;
+  if (data2.history.length) {
+    history = true
+  }
+
   const ret = pricingModule(e, inState, history);
   setOrder(ret);
   if (isQuote) {
@@ -67,12 +76,6 @@ function Quote({ onSubmit = handleSubmit, ...props }) {
     const clientInformationRef = doc(db, 'ClientInformation', cookies.get('userid'));
     const snapshot = await getDoc(clientInformationRef).catch(e => {console.log(e)})
     const data = snapshot.data();
-    const fuelQuoteRef = doc(db, 'FuelQuote', cookies.get('userid'));
-    const snapshot2 = await getDoc(fuelQuoteRef).catch(e => {console.log(e)})
-    const data2 = snapshot2.data();
-//    const fuelQuoteQuery = query(collection(db, 'FuelQuote'));
-//    const qs = await getDocs(fuelQuoteQuery);
-    if (data2) { await setHistory(true); }
     await setAddress(data['address1']);
     await setInState(data['state'] === 'TX' ? true : false);
     await setBusy(false);
@@ -100,7 +103,7 @@ function Quote({ onSubmit = handleSubmit, ...props }) {
                 price: ''
               }}
               onSubmit={(e, actions) => {
-                handleSubmit(e, startDate, cookies, order, setOrder, inState, history, isQuote, setTitleMsg);
+                handleSubmit(e, startDate, cookies, order, setOrder, inState, isQuote, setTitleMsg);
               }}
             >
               {({ errors, touched, isValidating }) => (
